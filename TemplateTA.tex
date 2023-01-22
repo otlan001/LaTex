@@ -1,0 +1,1476 @@
+\documentclass[a4paper,12pt]{report}
+% see pages 625 for the explanation of packages below
+
+\usepackage{ragged2e} %set the allign of a paragraph
+\usepackage{lipsum}% http://ctan.org/pkg/lipsum
+\usepackage[dotinlabels]{titletoc}% http://ctan.org/pkg/titletoc
+\usepackage{tocloft}
+\usepackage{wrapfig}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage[section]{placeins}
+
+\usepackage[top=3cm,bottom=3cm,left=3.77cm,right=3cm]{geometry}
+%\usepackage{tikz}
+%\usepackage{filecontents}
+%\usepackage[nottoc,notlot,notlof]{tocbibind}
+\usepackage{afterpage}
+\usepackage{amsmath}
+%\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{graphicx} %manage external picture Resize box and scalebox
+\usepackage{epstopdf}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[framed,autolinebreaks]{mcode}
+\usepackage{sectsty}
+\usepackage{textcomp}
+\usepackage{indentfirst}%the beginning of chapter/section is intended by usual paragraph indentetion
+\usepackage[font=footnotesize]{caption}
+\linespread{2}
+\setlength{\parindent}{3em}
+\setlength{\abovecaptionskip}{-10pt}
+\setlength{\belowcaptionskip}{-10pt}
+\everymath{\displaystyle}
+
+\titleformat{\chapter}[display]{\center\normalfont\large\bfseries}{\MakeUppercase{\chaptertitlename}\ \thechapter}{0pt}{\MakeUppercase}
+\titlespacing*{\chapter}{0pt}{0pt}{30pt}
+\sectionfont{\large}
+
+\renewcommand{\cfttoctitlefont}{\large\bfseries}
+%==================================================================
+\addtocontents{toc}{\protect\flushleft\protect\afterpage{}}
+
+\titlecontents{chapter}
+[0pt]
+{\vspace{1.5em}\small\bfseries}%
+{\contentsmargin{0pt}%
+\makebox[0em][l]{BAB \thecontentslabel\enspace}%
+\hspace{5em}}
+{}
+{\titlerule*[0.5pc]{.}\contentspage}
+
+
+\titlecontents{section}
+  [5.5em]{}{\thecontentslabel\hspace{1em}}{}{\titlerule*[0.5pc]{.}\contentspage}
+
+\titlecontents{subsection}
+  [7.7em]{}{\thecontentslabel\hspace{1em}}{}{\titlerule*[0.5pc]{.}\contentspage}
+
+
+%=============================================================
+%set panjang dan lebar untuk .tikz
+%\newlength\
+\newlength\figurewidth
+
+\lstset{language=Matlab,lineskip=1.5pt}
+
+%================tulisan dengan font Helvetica================
+\newenvironment{myfont}{\fontfamily{pcr}\selectfont}{\par}
+\DeclareTextFontCommand{\textmyfont}{\myfont}
+\hyphenation{General-ized}
+%=============================================================
+\begin{document}
+%============================================================
+
+\renewcommand{\chaptername}{\large BAB}
+\renewcommand{\figurename}{Gambar}
+\renewcommand{\tablename}{Tabel}
+\renewcommand{\cftfigpresnum}{Gambar\ }
+\renewcommand{\cfttabpresnum}{Tabel\ }
+\newlength{\mylenf}
+\settowidth{\mylenf}{\cftfigpresnum}
+\setlength{\cftfignumwidth}{\dimexpr\mylenf+3.5em}
+\setlength{\cfttabnumwidth}{\dimexpr\mylenf+2.5em}
+\renewcommand{\contentsname}{\vskip -2cm\centerline{DAFTAR ISI}}
+\renewcommand{\bibname}{DAFTAR PUSTAKA}
+\def\listfigurename{\vskip -2cm\centerline{\large{DAFTAR GAMBAR}}}
+\def\listtablename{\vskip -2cm\centerline{\large{DAFTAR TABEL}}}
+\def\appendixname{\vskip -2cm\centerline{\large{DAFTAR LAMPIRAN}}}
+\renewcommand{\proofname}{\textbf{\emph{Bukti.}}}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+%
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{lemma}{Lema}
+\newtheorem{proposition}{Proposisi}
+\newtheorem{fact}{Fakta}
+\newtheorem{definition}{Definisi}
+\newtheorem{corollary}{Akibat}
+\newtheorem{example}{Contoh}
+%
+\renewcommand{\thefigure}{\arabic{chapter}.\arabic{section}.\arabic{figure}}
+\renewcommand{\thetable}{\arabic{chapter}.\arabic{section}.\arabic{table}}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\thesection}{\arabic{chapter}.\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\arabic{chapter}.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+\renewcommand\thetheorem{\arabic{chapter}.\arabic{section}.\arabic{theorem}}
+\renewcommand{\thecorollary}{\arabic{chapter}.\arabic{section}.\arabic{corollary}}
+\renewcommand{\thedefinition}{\arabic{chapter}.\arabic{section}.\arabic{definition}}
+\renewcommand\thelemma{\arabic{chapter}.\arabic{section}.\arabic{lemma}}
+\renewcommand\theexample{\arabic{chapter}.\arabic{section}.\arabic{example}}
+\renewcommand\theproposition{\arabic{chapter}.\arabic{section}.\arabic{proposition}}
+\renewcommand\thefact{\arabic{chapter}.\arabic{section}.\arabic{fact}}
+\numberwithin{equation}{section}
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+%===========================================
+%Pendefinisian Untuk Lembar Pengesahan
+\newcommand{\TTD}[4][5cm]{%
+  \begin{tabular}{@{}p{#1}@{}}
+    #2 \\[2em]
+    \underline{#3} \\
+    [-1.1em]
+    {\small{NIP. #4}}
+  \end{tabular}
+}
+
+
+
+%=============================================================
+\begin{titlepage}
+\begin{center} {\large \textbf{PEMODELAN HARGA MINYAK SAWIT MENTAH DENGAN METODE ARIMA-GARCH}}\\[10ex]
+\textbf{PROPOSAL TUGAS AKHIR}\\[8ex]
+\textbf{OLEH:}\\
+\textbf{name student}\\
+\textbf{NO. BP. }\\[12ex]
+
+\includegraphics[width=3.0cm]{1}\\[10ex]
+\renewcommand{\baselinestretch}{1.0}
+{\textbf{PROGRAM STUDI MAGISTER MATEMATIKA}\\
+{\textbf{JURUSAN MATEMATIKA}}\\
+{\textbf{FAKULTAS MATEMATIKA DAN ILMU PENGETAHUAN ALAM}\\
+{\textbf{UNIVERSITAS of ...}}\\
+{\textbf{city}}\\
+{\textbf{2022}}}}
+\end{center}
+\end{titlepage}
+
+%==============================================================
+
+%====================================
+\newpage
+\addcontentsline{toc}{chapter}{DAFTAR ISI}
+\tableofcontents
+%===============================================
+%\newpage
+%\addcontentsline{toc}{chapter}{DAFTAR TABEL}
+%\listoftables
+%===============================================
+\newpage
+\addcontentsline{toc}{chapter}{DAFTAR GAMBAR}
+\listoffigures
+%===============================================
+%==============================================================
+
+\chapter{PENDAHULUAN}
+\pagenumbering{arabic}
+\thispagestyle{empty}
+\section{Latar Belakang}
+
+\section{Rumusan Masalah}
+
+\section{Tujuan Penelitian}
+
+\section{Sistematika Penulisan}
+
+%==============================================================
+\chapter{LANDASAN TEORI}
+\thispagestyle{empty}
+
+Bab ini berisikan tentang teori-teori yang terkait dengan pembahasan tentang model ARIMA-GARCH, model hybrid ARIMA-FTS Chen, ARIMA-FTS Lee dan ARIMA-FTS Tsaur dalam memodelkan harga minyak sawit mentah (CPO).
+
+\section{Minyak Sawit Mentah}
+
+Minyak Sawit Mentah (CPO) adalah minyak mentah yang berwarna kemerah-merahan yang diperoleh dari hasil ekstraksi atau dari proses pengempaan daging buah kelapa sawit. Produk CPO ini mencakupi banyak bidang, diantaranya pada industri sabun sebagai bahan penghasil busa, industri baja sebagai bahan pelumas, industri pangan sebagai minyak goreng, margarin, shortening dan vegetable ghee, industri oleokimia sebagai fatty acids, fatty alcohol dan glycesrin serta biodisel, dan juga pada industri lainnya.
+
+Dengan banyaknya manfaat CPO tadi, CPO bisa dikatakan salah satu faktor penggerak perekonomian dunia, terutama Indonesia. Hal ini dikarenakan Indonesia merupakan negara penghasil minyak sawit mentah tertinggi di dunia. Sebagai catatan, 85% kebutuhan minyak sawit mentah dunia dipenuhi oleh indonesia dan malaysia.
+
+\section{Faktor yang Mempengaruhi Harga Minyak Sawit Mentah}
+
+Faktor-faktor yang dapat mempengaruhi harga minyak mentah adalah sebagai berikut:
+ \begin{enumerate}
+         \item Harga Minyak mentah lainnya, Harga minyak bumi mentah, minyak kedelai mentah berbanding lurus dengan harga minyak sawit mentah. Jika minyak mentah lainnya naik, maka minyak sawit mentah juga akan naik, begitupun sebaliknya.
+         \item Harga minyak mentah dihargai dalam dolar Amerika Serikat. Ketika nilai dolar AS turun, harga minyak mentah akan mengalami kenaikan dan begitupun sebaliknya.
+         \item Permintaan pasar, Semakin tinggi permintaan pasar, semakin tinggi juga harga minyak sawit mentah, begitupun sebaliknya
+\end{enumerate}
+
+\section{Data Deret Waktu}
+
+Data deret waktu merupakan sekumpulan nilai suatu variabel yang dikumpulkan secara berkala pada waktu tertentu. Waktu tertentu yang dimaksud bisa dalam harian, mingguan, bulanan, tahunan, dan lain-lain. Data deret waktu menggambarkan aktivitas data dari waktu ke waktu.
+
+\subsection{Pola Data}
+
+Data deret waktu dapat diklasifikasi berdasarkan pola datanya. Pola data ini bertujuan untuk memberikan gambaran kepada peneliti-peneliti tentang model yang akan digunakan. Berikut dipaparkan beberapa klasifikasi pola data, yaitu:
+
+\begin{enumerate}
+\item Pola Data Horizontal\\
+Pola data horizontal terjadi apabila data pengamatan bergerak secara acak, namum menyerupai bentuk garis horizontal. Data berpola horizontal disebut juga dengan data stasioner. Bentuk plot data horizontal dapat dilihat pada Gambar 2.3.1 berikut:
+
+\begin{figure}[htbp]
+\centering
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=8 cm]{21}\\
+  \caption{Plot Data Berpola Horizontal}
+\end{figure}
+
+\item Pola Data Trend\\
+Pola data trend terjadi apabila data pengamatan bergerak secara acak, namun menyerupai bentuk garis miring selama periode yang lama. Pola data trend disebut dengan data tidak stasioner. Bentuk plot data trend dapat dilihat pada Gambar 2.3.2 berikut
+
+\newpage
+\begin{figure}[htbp]
+\centering
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=8 cm]{22}\\
+  \caption{Plot Data Berpola Trend}
+\end{figure}
+
+\item Pola Data Musiman\\
+Pola data musiman terjadi apabila data pengamatan bergerak secara acak namun ada pergerakan yang selalu sama dan berulang dalam selang waktu berbeda. Artinya apabila data tersebut dikelompokkan menjadi beberapa bagian, maka pergerakan data tersebut sama. Hal ini biasanya dipengaruhi oleh faktor-faktor musim yang berulang, dari satu periode ke periode berikutnya. Bentuk pola data musiman adalah sebagai berikut:
+
+\begin{figure}[htbp]
+\centering
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=8 cm]{23}\\
+  \caption{Plot Data Berpola Musiman}
+\end{figure}
+
+\item Pola Data Siklis\\
+Pola data siklis terjadi apabila data pengamatan bergerak di sekitar garis trend. Hal ini biasanya dipengaruhi oleh fluktuasi ekonomi jangka panjang. Pola data siklis terlihat pada Gambar 2.3.4 berikut:
+
+
+\begin{figure}[htbp]
+\centering
+  % Requires \usepackage{graphicx}
+  \includegraphics[width=8 cm]{24}\\
+  \caption{Plot Data Berpola Siklis}
+\end{figure}
+\end{enumerate}
+
+\subsection{Stasioneritas Data}
+
+Setelah tahap awal yakni pola data diketahui berdasarkan plotnya, tahap berikutnya adalah memeriksa stasioneritas data. Data deret waktu dinyatakan stasioner apabila data menggambarkan pola yang tetap dari waktu ke waktu. Dengan kata lain, tidak terdapat kenaikan atau penurunan pada data yang terlalu signifikan. Stasioneritas data, diklasifikasikan menjadi 2 bentuk, yaitu:
+\begin{enumerate}
+\item	Stasioner terhadap Nilai Tengah\\
+Data deret waktu dikatakan stasioner terhadap nilai tengah, apabila data bergerak di sekitar nilai tengah selama waktu pengamatan. Misalkan $X_t$ adalah data deret waktu pada saat $t$. Data deret waktu $X_t$ dikatakan stasioner pada nilai tengah jika nilai $E(X_t)= \mu$ , dimana nilai $\mu$ merupakan nilai tengah yang tidak bergantung terhadap $t$. Apabila data deret waktu tidak stasioner terhadap nilai tengah maka dilakukan \emph{differencing} agar data menjadi stasioner terhadap nilai tengah.
+
+\emph{Differencing} merupakan proses menghitung nilai selisih dari data pengamatan sampai data stationer. Artinya setelah melakukan differencing pertama, nilai selisih dari data pengamatan yang didapatkan diperiksa apakah stasioner atau tidak. Jika belum stasioner, maka dilakukan \emph{differencing} kembali hingga stasioner.
+
+Misalkan $X_t$ adalah data deret waktu pada saat $t$ yang tidak stasioner. Data deret waktu $X_t$ dilakukan differencing orde pertama dinyatakan sebagai berikut:
+\begin{equation}\label{2.3.1}
+    \nabla^1 X_t  = X_t  - X_{t-1}
+\end{equation}
+dimana
+\begin{enumerate}
+        \item[$\nabla^1 X_t$] : \emph{differencing} orde pertama pada nilai $X$ ke $t$
+        \item[$X_t$]: nilai ke $t$
+        \item[$X_{t-1}$] 	: nilai ke $t - 1$
+      \end{enumerate}
+
+Metode \emph{differencing} yang digunakan adalah metode operator \emph{shift} mundur (\emph{backward shift}), yang dinotasikan dengan B. Penggunaan operator B adalah sebagai berikut:
+\begin{equation}\label{2.3.2}
+    BX_t  = X_{t-1}
+\end{equation}
+Operator $B$ pada $X_t$, mempunyai pengaruh dalam menggeser data satu periode ke belakang. Penerapan dua operator $B$ pada $X_t$, akan menggeser data tersebut dua periode ke belakang seperti berikut:
+\begin{equation}\label{2.3.3}
+B(BX_t )= B^2  Xt = X_{t-2}
+\end{equation}
+Persamaan (2.3.1) dapat ditulis menggunakan operator \emph{shift} mundur yaitu:
+\begin{equation}\label{2.3.4}
+\begin{aligned}
+    \nabla^1 X_t  = X_t  - X_{t-1}\\
+          = X_t  - BX_t\\
+          =(1-B)X_t
+          \end{aligned}
+\end{equation}
+
+Berdasarkan Persamaan (2.3.4), diperoleh \emph{differencing} orde pertama dapat dinyatakan oleh ($1-B$). Jika data belum stasioner, maka dilakukan \emph{differencing} orde kedua yang dapat dihitung sebagai berikut:
+\begin{equation}\label{2.3.5}
+\begin{aligned}
+\nabla^2 X_t  = \nabla^1 X_t  - \nabla^1 X_{t-1}\\
+= (X_t  - X_{t-1} )  - (X_{t-1}  - X_{t-2} )\\
+= X_t  - X_{t-1}  - X_{t-1}  + X_{t-2}\\
+= X_t  - 2X_{t-1}  + X_{t-2}\\  	
+= X_t  - 2BX_t  + B^2 X_t\\
+= (1 - 2B + B^2 ) X_t\\
+          = (1 - B)^2 X_t	
+\end{aligned}
+\end{equation}
+Pada Persamaan (2.3.5) \emph{differencing} orde kedua dapat dinyatakan oleh ($1-B)^2$. Jika data masih belum stasioner, maka dilakukan \emph{differencing} orde ketiga yang dapat dihitung sebagai berikut:
+
+\begin{equation}\label{2.3.6}
+\begin{aligned}
+    \nabla^3 X_t  = \nabla^2 X_t  - \nabla^2 X_{t-1}\\
+= \nabla^1 X_t  - \nabla^1 X_{t-1}  - (\nabla^1 X_{t-1}  - \nabla^1 X_{t-2})\\
+= \nabla^1 X_t  - \nabla^1 X_{t-1}  - \nabla^1 X_{t-1}  + \nabla^1 X_{t-2}\\
+= \nabla^1 X_t  - 2\nabla^1 X_{t-1}  + \nabla^1 X_{t-2}\\
+= (X_t  - X_{t-1}) - 2(X_{t-1}  - X_{t-2}) + (X_{t-2}  - X_{t-3})\\
+= X_t  - X_{t-1}  - 2X_{t-1}  + 2X_{t-2}  + X_{t-2}  - X_{t-3}\\
+= X_t  - 3X_{t-1}  + 3X_{t-2}  - X_{t-3}\\
+= X_t  - 3BX_t  + 3B^2 X_t  - B^3 X_t\\
+= (1 - 3B + 3B^2  - B^3 )  X_t\\
+          = (1 - B)^3 X_t
+\end{aligned}
+\end{equation}
+
+Operator $(1 - B)^3$ menyatakan \emph{differencing} orde ketiga pada data. Tujuan melakukan \emph{differencing} untuk mencapai stasioneritas terhadap nilai tengah. Secara umum, apabila terdapat \emph{differencing} orde ke \emph{d} untuk mencapai stasioneritas maka dapat dinyatakan sebagai berikut:
+\begin{equation}\label{2.3.7}
+    \nabla^d X_t  = (1 - B)^d X_t
+\end{equation}
+
+\item 	Stasioner terhadap Ragam\\
+Data deret waktu dikatakan stasioner terhadap ragam, apabila data berfluktuasi dengan ragam yang konstan selama waktu pengamatan. Misalkan $X_t$ adalah data deret waktu pada saat $t$. Data deret waktu $X_t$ dikatakan stasioner terhadap ragam, jika $Var(X_t) = Var(X_{t+k})  = \sigma^2 ; k = 1, 2, ...,$ dengan nilai ragam tidak bergantung pada $t$. Jika pada data asli agar stasioner terhadap ragam.
+
+Transformasi \emph{Box-Cox} adalah salah satu metode yang digunakan untuk menstasionerkan data terhadap ragam. Misalkan $T(X_t)$ adalah fungsi transformasi dari $X_t$ . Jika $X_t$ belum stasioner terhadap ragam, maka dapat ditransformasi dengan formula berikut:
+  \begin{equation}\label{2.3.8}
+          T(X_t)=\begin{cases}
+           \frac{X^\lambda_{t}-1}{\lambda}, & \lambda\neq0\\
+          ln(X_t),& \lambda = 0\\
+         \end{cases}
+        \end{equation}
+dengan $\lambda$ disebut parameter transformasi. Berdasarkan Persamaan (2.3.8), diperoleh hasil transformasi nilai $X_t$ dari beberapa nilai $\lambda$ yang umum digunakan seperti pada tabel berikut:
+\end{enumerate}
+\begin{center}
+ Tabel 2.3.1 : Bentuk Transformasi
+\end{center}
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+$\lambda$&	Bentuk Transformasi	\\\hline
+-1	&	$\frac{1}{X_t}$	\\\hline
+-0,5	& $\frac{1}{\sqrt{X_t}}	$	\\\hline
+0	&		$ln(X_t)$\\\hline
+0,5	&$ \sqrt{X_t}	$	\\\hline
+1	&	$X_t $(tidak ditransformasikan)	\\\hline
+  \end{tabular}
+\end{table}
+
+\subsection{Uji Kestasioneran}
+
+Langkah-langkah yang dilakukan untuk pengujian stasioneritas suatu data adalah sebagai berikut:
+\begin{enumerate}
+\item	Analisis Grafik\\
+Langkah awal yang dilakukan untuk melihat kestasioneran suatu data deret waktu adalah analisis grafik. Pada grafik tersebut dibuat plot antara data pengamatan dengan waktu. Apabila data tersebut berfluktuasi di sekitar nilai tengah dan ragam yang konstan maka dapat disimpulkan data tersebut stasioner. Akan tetapi, langkah analisis grafik ini memiliki kelemahan yaitu bersifat subjektif dalam mengambil keputusan apakah data tersebut stasioner atau tidak. Hal ini mengakibatkan terjadinya perbedaan dalam pengambilan keputusan.
+\item Uji \emph{Augmented Dickey-Fuller} (ADF)\\
+Uji akar unit merupakan salah satu uji formal untuk menguji kestasioneran terhadap nilai tengah pada deret waktu. Uji akar unit yang sering digunakan adalah uji \emph{Augmented Dickey-Fuller} (ADF). Uji ADF ini dikenalkan oleh David Dickey dan Wayne Fuller. Pengujian dengan \emph{Augmented Dickey-Fuller} (ADF) disajikan dalam bentuk persamaan regresi sebagai berikut:
+\begin{equation}\label{2.3.9}
+    \nabla X_t = \mu + \delta X_{t-1}  +\sum^k_{i=1} \phi_i \nabla X_{t-i}  + \varepsilon_t
+\end{equation}
+dengan $\delta = \rho - 1 ,\nabla X_t  = X_t  - X_{t-1}$, $k$ adalah jumlah $lag$, $\phi$ dan $\mu$ adalah parameter model, serta $t$ adalah waktu pengamatan. Hipotesis yang digunakan dalam uji ADF yaitu:
+\begin{center}
+$H_0 :  \delta = 0 $ (data tidak stasioner)\\
+$H_1 : \delta \neq 0$ (data stasioner)
+\end{center}
+Statistik uji \emph{Augmented Dickey-Fuller} (ADF) yang digunakan adalah sebagai berikut :
+\begin{equation}\label{2.3.10}
+    ADF=\frac{\delta}{SE(\delta)}
+\end{equation}
+
+Dimana $SE(\delta)$ merupakan standard error untuk $\delta$. Klasifikasi pengambilan keputusan sebagai berikut :
+\begin{itemize}
+\item	Jika nilai kritis tabel-t ADF $\geq$ statistik uji ADF, maka tolak $H_0$, hal ini menandakan bahwa data stationer
+\item Jika nilai kritis tabel-t ADF $<$ statistik uji ADF, maka tolak $H_0$, hal ini menandakan bahwa data belum stationer
+\end{itemize}
+
+\end{enumerate}
+
+\section{Autocorrelation Function (ACF) dan Partial Autocorrelation Function (PACF)}
+
+Autocorrelation Function (ACF) adalah fungsi yang menunjukkan besarnya korelasi antara pengamatan pada waktu ke-t, dengan pengamatan waktu sebelumnya. Partial Autocorrelation Function (PACF) adalah fungsi yang menunjukkan besarnya korelasi parsial antara pengamatan pada waktu ke-t, dengan pengamatan waktu sebelumnya. Fungsi ACF dan PACF ini digunakan untuk mengidentifkasi model dari data deret waktu. Berikut ini diberikan definisi dari fungsi autokovarian dan fungsi autokorelasi pada data deret waktu stastioner.
+
+\textbf{Definisi 2.4.1} \emph{Misalkan $X_t$ adalah data deret waktu stasioner, maka fungsi autokovarian (ACVF) dari $X_t$ pada $lag$ $k$ adalah}
+\begin{equation}\label{2.4.1}
+\gamma k = Cov(X_t  ,X_{t+k}) = E[(X_t  - \mu)(X_{t+k}  - \mu)]
+\end{equation}
+
+\emph{Fungsi autokorelasi (ACF) dari $X_t$ adalah}
+\begin{equation}\label{2.4.2}
+\rho k = Corr(X_t  ,X_{t+k} )=\frac{\gamma_k}{\gamma_0}
+\end{equation}
+
+Fungsi autokovarian dan fungsi autokorelasi biasanya tidak diketahui pada data populasi. Hal ini, dapat diduga menggunakan fungsi autokovarian dan autokorelasi sampel. Fungsi autokovarian untuk sampel $X_1, X_2, ..., X_n$ yaitu sebagai berikut:
+\begin{equation}\label{2.4.3}
+\hat{\gamma}_k = \frac{1}{n}\sum^{n-k}_{t=1}(X_t-\hat{X})(X_{t+k} - \hat{X})
+\end{equation}
+
+dan fungsi autokorelasi untuk sampel $X_1, X_2, ..., X_n$ yaitu :
+\begin{equation}\label{2.4.4}
+\hat{\rho}_k = \frac{\sum^{n-k}_{t=1}(X_t-\hat{X})(X_{t+k} - \hat{X})}{\sum^n_{t=1}(X_t - \hat{X})^2}
+\end{equation}
+dimana
+\begin{itemize}
+\item [$\hat{\gamma}_k$] 	: koefisien autokovarian lag ke- $k $ untuk $k = 1, 2, 3, ...$
+    \item [$\hat{\rho}_k$] 	: koefisien autokovarian lag ke- $k $ untuk $k = 1, 2, 3, ...$
+    \item [n] 	: jumlah data pengamatan
+\item [$X_t$] 	: nilai X ke- $t$
+\item [X] 	: nilai tengah X.
+\end{itemize}
+
+Fungsi autokorelasi parsial digunakan untuk mengukur korelasi antara $X_t$ dan $X_{t+k}$, setelah data $X_{t+1},X_{t+2},...,X_{t+k-1}$ dihilangkan. Fungsi autokorelasi parsial antara $X_t$ dengan $X_{t+k}$ didefinisikan sebagai berikut :
+\begin{equation}\label{2.4.5}
+\phi_{kk}=Corr(X_t,X_{t+k}|X_{t+k-1},X_{t+k-2},...,X_{t+1};k \geq 1
+\end{equation}
+
+Fungsi autokorelasi parsial biasanya tidak diketahui pada data populasi. Hal ini, dapat diduga dengan menggunakan fungsi autokorelasi parsial sampel yang dinyatakan sebagai berikut:
+\begin{equation}\label{2.4.6}
+\hat{\phi}_{k+1,k+1}=\frac{\hat{\rho}_{k+1}-\sum^k_{j=1}\hat{\phi}_k,j\hat{\rho}_{k+1-j}}
+{1-\sum^k_{j=1}\hat{\phi}_k,j\hat{\rho}_j}
+\end{equation}
+dan
+
+$\hat{\phi}_{k+1,j}  = \hat{\phi}_{kj}  - \hat{\phi}_{k+1,k+1}+ \hat{\phi}_{k,k+1-j}; j = 1,2,...,k$
+
+Fungsi autokorelasi parsial antara data $X_t$ dan $X_{t+k}$ pada Persamaan (2.4.5) diuraikan sebagai berikut:
+
+Misalkan data $X_t$ adalah data yang stasioner dengan $E(X_t) = 0$. Data $X_{t+k}$ dapat dinyatakan sebagai model linier yaitu:
+\begin{equation}\label{2.4.7}
+X_{t+k}  = \hat{\phi}_{kj}X_{t+k-1} + \hat{\phi}_{k2} X_{t+k-2}+ ...+\hat{\phi}_{kk} X_{t+\varepsilon t+k}
+\end{equation}
+
+dengan $\hat{\phi}_{ki}$ adalah parameter model ke-$i$ dan $\varepsilon_{t+k}$ adalah residu yang tidak berkorelasi dengan $X_{t+k-j}$ untuk $j = 1, 2, ..., k$. Langkah awal yang dilakukan yaitu mengalikan Persamaan (2.4.7), dengan $X_{t+k-j}$ pada kedua ruas sehingga diperoleh
+\begin{equation}\label{2.4.8}
+X_{t+k}X_{t+k-j}  = \hat{\phi}_{k1}X_{t+k-1}X_{t+k-j} + \hat{\phi}_{k2} X_{t+k-2}X_{t+k-j}+ ...+\hat{\phi}_{kk}X_t X_{t+k-j}+ \varepsilon_{t+k}X_{t+k-j}
+\end{equation}
+
+nilai harapan dari $X_{t+k} X_{t+k-j}$ adalah sebagai berikut:\\
+$
+E(X_{t+k} X_{t+k-j} )= \hat{\phi}_{k1} E(X_{t+k-1} X_{t+k-j})+ \hat{\phi}_{k2} E(X_{t+k-2} X_{t+k-j } )+ ...+ \hat{\phi}_{kk} E(X_t X_{t+k-j})$
+\begin{equation}\label{2.4.9}
++E(\varepsilon_{t+k} X_{t+k-j})
+\end{equation}
+dengan memisalkan nilai $E(X_{t+k} X_{t+k-j}) = \gamma_j$ untuk $j = 0, 1, ..., k$ dan diketahui $E(\varepsilon_{t+k} X_{t+k-j}) = 0$, diperoleh
+\begin{equation}\label{2.4.10}
+\gamma_j = \phi_{k1}\gamma_{j-1}+\phi_{k2} \gamma_{j-2}  + ...+ \phi_{kk} \gamma_{j-k}
+\end{equation}
+diketahui $\rho_j  =\frac{\gamma_j}{\gamma_0}$  untuk $j = 0, 1, ..., k$. Persamaan (2.4.10) dibagi dengan $\gamma_0$ sehingga diperoleh
+
+$\rho_j  = \phi_{k1} \rho_{j-1}  + \phi_{k2} \rho_{j-2}  + ...+\phi_{kk} \rho_{j-k}$
+
+untuk $j = 1, 2, ..., k$, dengan mensubstitusikan $\rho_k  = \rho_{-k}$ diperoleh sistem persamaan linear sebagai berikut:
+\begin{center}
+$\rho_1  = \rho_0 \phi_{k1}  + \rho_1 \phi_{k2}+ \rho_2 \phi_{k3}  + ...+ \rho_{k-1} \phi_{kk}$\\
+$\rho_2  = \rho_1 \phi_{k1}  + \rho_0 \phi_{k2}+ \rho_1 \phi_{k3}  + ...+ \rho_{k-2} \phi_{kk}$\\
+$\rho_3  = \rho_2 \phi_{k1}  + \rho_1 \phi_{k2}+ \rho_0 \phi_{k3}  + ...+ \rho_{k-3} \phi_{kk}$\\
+$\vdots$
+\end{center}
+\begin{equation}\label{2.4.11}
+\rho_k  = \rho_{k-1} \phi_{k1}  + \rho_{k-2} \phi_{k2}+ \rho_{k-3} \phi_{k3}  + ...+ \rho_{0} \phi_{kk}
+\end{equation}
+
+Diketahui $\rho_0  = 1$ sehingga Persamaan (2.4.11) dapat dituliskan dalam notasi matriks, yaitu
+\begin{equation}
+\begin{bmatrix}
+1&\rho_1&\cdots&\rho_{k-1}\\
+\rho_1&1&\cdots&\rho_{k-2}\\
+\vdots&\vdots&\ddots&\cdots\\
+\rho_{k-1}&\rho_{k-2}&\cdots&1\\
+\end{bmatrix}
+\begin{bmatrix}
+\phi_{k1}\\
+\phi_{k2}\\
+\vdots\\
+\phi_{kk}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\rho_{1}\\
+\rho_{2}\\
+\vdots\\
+\rho_{k}
+\end{bmatrix}
+\end{equation}
+
+Persamaan 2.4.12 dapat diselesaikan dengan menggunakan aturan \emph{Cramer}. Penjelasan tentang aturan \emph{Cramer} pada sistem persamaan linier diberikan oleh Teorema 2.4.1 berikut.\\
+\textbf{Teorema 2.4.1}. \emph{Jika Ax = b adalah suatu sistem dari n persamaan linier dengan n faktor yang tidak diketahui sedemikian rupa sehingga $det(A) \neq 0$, maka sistem ini memiliki solusi yang unik. Solusinya adalah }\\
+$x_1  =\frac{det(A_1 )}{det(A)},x_2  =\frac{det(A_2 )}{det(A)},...,x_n  =\frac{det(A_n)}{det(A)}$\\
+dimana $A_j$ adalah matriks yang diperoleh dengan mengganti entri-entri pada kolom ke-$j$ dari A dengan entri-entri pada matriks
+
+$b=
+\begin{bmatrix}
+b_1\\
+b_2\\
+\vdots\\
+b_n\\
+\end{bmatrix}
+$
+\\
+
+Persamaan (2.4.12) dapat diselesaikan menggunakan Teorema 2.4.1 tentang aturan \emph{Cramer}, dengan
+
+$
+A=\begin{bmatrix}
+1&\rho_1&\cdots&\rho_{k-1}\\
+\rho_1&1&\cdots&\rho_{k-2}\\
+\vdots&\vdots&\ddots&\cdots\\
+\rho_{k-1}&\rho_{k-2}&\cdots&1\\
+\end{bmatrix}
+.x=\begin{bmatrix}
+\phi_{k1}\\
+\phi_{k2}\\
+\vdots\\
+\phi_{kk}
+\end{bmatrix}
+.b=
+\begin{bmatrix}
+\rho_{1}\\
+\rho_{2}\\
+\vdots\\
+\rho_{k}
+\end{bmatrix}
+$
+
+untuk $k = 1, 2, ...$ digunakan untuk mencari nilai fungsi autokorelasi parsial lag $k$ yaitu $\phi_{k1},  \phi_{k2},...,\phi_{kk}.$
+
+\begin{enumerate}
+\item Lag pertama dengan k = 1\\.
+Fungsi autokorelasi parsial pada lag pertama, akan sama dengan fungsi autokorelasi pada lag pertama. Hal ini dikarenakan, sistem persamaan $\rho_1  = \phi_{11} \rho_0$ dengan $k = 1$ dan $\rho_0  = 1$ sehingga diperoleh
+\begin{equation}\label{2.4.14}
+\phi_{11}  = \rho_1	
+\end{equation}
+
+\item Lag kedua dengan k = 2.\\
+Fungsi autokorelasi parsial pada lag kedua diperoleh sistem persamaan yaitu:
+\begin{center}
+$\rho_1=\phi_{11}\rho_0 + \phi_{22}\rho_0$
+\end{center}
+\begin{equation}\label{2.4.15}
+\rho_2=\phi_{11}\rho_1 + \phi_{22}\rho_1
+\end{equation}
+dan dapat ditulis dalam bentuk matriks, yaitu:
+\begin{center}
+$\begin{bmatrix}
+\rho_0&\rho_1\\
+\rho_1&\rho_0
+\end{bmatrix}
+\begin{bmatrix}
+\phi_{11}\\
+\phi_{12}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\rho_1\\
+\rho_2
+\end{bmatrix}
+$
+\end{center}
+
+dengan menggunakan aturan Cramer diperoleh,\\
+\begin{equation}
+\phi_{22}= \frac{det(A_2)}{det(A)}=\frac{\begin{bmatrix}
+                                           1&\rho_1\\
+                                           \rho_1&\rho_2
+                                         \end{bmatrix}}{\begin{bmatrix}{cc}
+                                           1&\rho_1\\
+                                           \rho_1&1
+                                         \end{bmatrix}}=\frac{\rho_2-\rho_1^2}{1-\rho_1^2}
+\end{equation}
+
+\item Lag ketiga dengan k = 3\\
+Fungsi autokorelasi parsial pada lag ketiga diperoleh sistem persamaan yaitu:
+\begin{center}
+$\rho_1=\phi_{11}\rho_0 + \phi_{22}\rho_1+\phi_{33}\rho_2$\\
+$\rho_2=\phi_{11}\rho_1 + \phi_{22}\rho_0+\phi_{33}\rho_1$\\
+\end{center}
+\begin{equation}
+\rho_3=\phi_{11}\rho_2 + \phi_{22}\rho_1+\phi_{33}\rho_0
+\end{equation}
+dapat ditulis dalam bentuk matriks, yaitu:
+\begin{center}
+$\begin{bmatrix}
+\rho_0&\rho_1&\rho_2\\
+\rho_1&\rho_0&\rho_1\\
+\rho_2&\rho_1&\rho_0
+\end{bmatrix}
+\begin{bmatrix}
+\phi_{11}\\
+\phi_{12}\\
+\phi_{13}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\rho_1\\
+\rho_2\\
+\rho_3
+\end{bmatrix}
+$
+\end{center}
+
+dengan menggunakan aturan Cramer diperoleh,\\
+$
+\phi=\frac{det(A_3)}{det(A)}=\frac{\begin{bmatrix}
+1&\rho_1&\rho_1\\
+\rho_1&1&\rho_2\\
+\rho_2&\rho_1&\rho_3
+\end{bmatrix}}
+{\begin{bmatrix}
+&\rho_1&\rho_2\\
+\rho_1&1&\rho_1\\
+\rho_2&\rho_1&1
+\end{bmatrix}}$
+
+$=\frac{\rho_3  + \rho_2^2 \rho_1  + \rho_1^3  - \rho_1 \rho_2  - \rho_2 \rho_1  - \rho_1^2 \rho_3 }{1 + \rho_1^2 \rho_2  + \rho_1^2 \rho_2  - \rho_2^2  - \rho_1^2  - \rho_1^2 }
+$
+
+
+$=\frac{\rho_3  - \rho_1^2 \rho_3  - \rho_1 \rho_2  + \rho_2^2 \rho_1  - \rho_2 \rho_1  + \rho_1^3}{1 + \rho_1^2 \rho_2  + \rho_1^2 \rho_2  - \rho_2^2  - \rho_1^2  - \rho_1^2 }$
+
+$=\frac{\rho_3  - \rho_1^2 \rho_3  - \rho_1 \rho_2 (1 - \rho_2 )  - \rho_2 \rho_1  + \rho_1^3  }{1 + \rho_1^2 \rho_2  + \rho_1^2 \rho_2  - \rho_2^2  - \rho_1^2  - \rho_1^2 }$
+
+$=\frac{\rho_3  - \rho_1^2 \rho_3  - \rho_1 \rho_2 (1 - \rho_1^2  - \rho_2  + \rho_1^2 )- \rho_2 \rho_1  + \rho_1^3  }{1 - \rho_1^2  - \rho_1^2  + \rho_1^4  + 2\rho_1^2 \rho_2  - \rho_1^4  - \rho_2^2 }$
+
+$=\frac{\rho_3 (1 - \rho_1^2 ) - \rho_1 \rho_2 (1 - \rho_1^2)  + (\rho_2  - \rho_1^2) \rho_1 \rho_2  - \rho_1 (\rho_2  - \rho_1^2  )}{(1 - \rho_1^2  )- \rho_1^2  (1 - \rho_1^2 )+ \rho_1^2  (\rho_2  - \rho_1^2 )- \rho_2 (\rho_2  - \rho_1^2  ) }$
+
+$=\frac{\frac{\rho_3 (1 - \rho_1^2 )- \rho_1 \rho_2 (1 - \rho_1^2  )+ (\rho_2  - \rho_1^2 ) \rho_1 \rho_2  - \rho_1 (\rho_2  - \rho_1^2  )}{(1 - \rho_1^2) }}
+{\frac{(1 - \rho_1^2 )- \rho_1^2  (1 - \rho_1^2  )+ \rho_1^2  (\rho_2  - \rho_1^2  )- \rho_2 (\rho_2  - \rho_1^2 ) }{(1 - \rho_1^2)}}
+$
+
+
+$=\frac{\rho_3-\rho_1 \rho_2+(\frac{\rho_2-\rho_1^2}{1-\rho_1^2 }) \rho_1 \rho_2-(\frac{\rho_2-\rho_1^2}{1-\rho_1^2 }) \rho_1}
+{1-\rho_1^2+(\frac{\rho_2-\rho_1^2}{1-\rho_1^2 }) \rho_1^2-(\frac{\rho_2-\rho_1^2}{1-\rho_1^2 }) \rho_2 }
+$
+
+$
+=\frac{\rho_3-(\rho_1-(\frac{\rho_2-\rho_1^2}{1-\rho_1^2 }) \rho_1 ) \rho_2-(\frac{\rho_2-\rho_1^2}{1-\rho_1^2 }) \rho_1}{1-(\rho_1-(\frac{\rho_2-\rho_1^2}{1-\rho_1^2 }) \rho_1 ) \rho_1-(\frac{\rho_2-\rho_1^2}{1-\rho_1^2} )\rho_2}
+$
+
+$=\frac{\rho_3-(\phi_{11}-\phi_{22} \phi_{11}) \rho_2-\phi_{22} \rho_1}{1-(\phi_{11}-\phi_{22} \phi_{11} ) \rho_1-\phi_{22} \rho_1}
+$
+
+$
+=\frac{\rho_3-\phi_{21} \rho_2-\phi_{22} \rho_1}{1-\phi_{21} \rho_1-\phi_{22} \rho_2 }$
+
+$
+=\frac{\rho_3 - \sum_{j=1}^2\phi_2, j\rho_{3-j}}{1-\sum_{j=1}^2\phi_2, j\phi_j}$
+
+\item	Lag ke-$k$, dengan menggunakan aturan Cramer diperoleh fungsi autokorelasi parsial lag ke-$k$ yaitu:
+\end{enumerate}
+
+\begin{center}
+$\phi_{kk}=
+\frac{\begin{bmatrix}
+1&\rho_1&\cdots &\rho_{k-1}&\rho_1\\
+\rho_1&1&\cdots &\rho_{k-3}&\rho_2\\
+\vdots&\vdots&\ddots&\vdots\\
+\rho_{k-1}&\rho_{k-2}&\cdots &\rho_1&\rho_k
+\end{bmatrix}}
+{\begin{bmatrix}
+1&\rho_1&\cdots &\rho_{k-2}&\rho_{k-1}\\
+\rho_1&1&\cdots &\rho_{k-3}&\rho_{k-2}\\
+\vdots&\vdots&\ddots&\vdots\\
+\rho_{k-1}&\rho_{k-2}&\cdots &\rho_1&1
+\end{bmatrix}}
+$
+\end{center}
+
+
+\begin{equation}
+=\frac{\rho_k\sum^k_{j=1}\phi_{k-1},j\rho_j}{1-\sum^k_{j=1}\sum^k_{j=1}\phi_{k-1},j\rho_j}
+\end{equation}
+
+
+dengan $\phi_{kk}$ disebut \emph{Partial Autocorrelation Function} (PACF) antara $X_t$ dan $X_{t+k}$. Fungsi $\phi_{kk}$  menjadi notasi standar untuk PACF antara pengamatan $X_t$ dan $X_{t+k}$  dalam analisis data deret waktu.
+
+
+\section{Proses White Noise }
+
+Proses \emph{white noise} merupakan proses stasioner yang dianggap sebagai faktor pembangun bagi proses deret waktu lainnya. Proses \emph{white noise} digunakan untuk menjelaskan perilaku data yang acak dan stasioner. Proses \emph{white noise} dinotasikan sebagai berikut :
+\begin{equation}
+    X_t ~ WN(0,\sigma^2)
+\end{equation}
+
+Suatu data deret waktu ${X_t}$ disebut \emph{white noise} apabila mempunyai sifat-sifat sebagai berikut:
+\begin{enumerate}
+    \item Deretnya terdiri dari peubah acak yang tidak saling berkorelasi.
+\item $E(X_t) = 0 $ untuk setiap t
+\item $Var(X_t) = \sigma^2$ untuk setiap t.
+\item $\gamma_k  = Cov(X_{t+k},X_t) = 0$ untuk $k \neq 0$
+\end{enumerate}
+
+Karena variabel $X_t$ tidak berkorelasi, maka fungsi autokovariannya yaitu sebagai berikut:
+\begin{equation}\label{2.5.1}
+    \gamma_k=\begin{cases}
+    \sigma^2, k = 0\\
+    0, k \neq 0
+    \end{cases}
+\end{equation}
+
+Fungsi autokorelasinya yaitu:
+\begin{equation}\label{2.5.2}
+    \rho_k=,\begin{cases}
+    1, k = 0\\
+    0, k \neq 0
+    \end{cases}
+    \end{equation}
+
+Fungsi autokorelasi parsialnya adalah sebagai berikut:
+\begin{equation}\label{2.5.3}
+    \phi_kk=,\begin{cases}
+    1, k = 0\\
+    0, k \neq 0
+    \end{cases}
+    \end{equation}
+
+\section{Model-Model Deret Waktu}
+
+Beberapa model deret waktu yang dapat digunakan pada pemodelan data deret waktu adalah sebagai berikut:
+
+\subsection{\emph{Auto-regressive}(AR)}
+
+Model \emph{Auto-regressive} (AR) merupakan model stasioner dari data deret waktu, dimana nilai pengamatan waktu ke-$t$ dipengaruhi oleh nilai pengamatan sebelumnya. Model AR dengan orde $p$ dinotasikan dengan AR($p$). Bentuk umum dari model AR($p$) adalah:
+\begin{equation}\label{2.6.1}
+    X_t=\phi_1 X_{t-1}+\phi_2 X_{t-2}+...+\phi_p X_{t-p}+\varepsilon_t
+\end{equation}
+
+dimana :
+\begin{itemize}
+    \item [$X_t$] : data pada periode ke-$t$, $t=1,2,.., n$
+    \item [$\phi_i$]: parameter AR ke-$i$, $i = 1, 2, ..., p$
+    \item [$P$] : orde dari model AR
+    \item [$\varepsilon_t$] : residu saat t dengan $\varepsilon_t ~ WN(0,\sigma^2)$
+\end{itemize}
+
+dengan menggunakan operator \emph{shift} mundur yaitu $B X_t  = X_{t-1}$, Persamaan (2.6.1) dapat ditulis yaitu:
+\begin{equation}\label{2.6.2}
+    \begin{aligned}
+        X_t = \phi_1 B X_t + \phi_2 B^2 X_t + ... + \phi_p B^p X_t + \varepsilon_t\\
+        X_t - \phi_1 B X_t - \phi_2 B^2 X_t - ... - \phi_p B^p X_t =
+        \varepsilon_t\\
+        (1 - \phi_1 B  - \phi_2 B^2  - ... - \phi_p B^p) X_t = \varepsilon_t\\
+        \phi_p (B^p) X_t = \varepsilon_t
+    \end{aligned}
+\end{equation}
+dengan $\phi_p (B) = (1 - \phi_1 B  - \phi_2 B^2  - ... - \phi_p B^p)$. Model AR(p) memenuhi kondisi stasioner jika total koefisien $\sum^p_{i=1} \phi_1 < 1, i = 1,2,..,p$
+
+\subsection{\emph{Moving Average} (MA)}
+
+Model \emph{Moving Average} (MA) merupakan model stasioner dari data deret waktu, dimana nilai pengamatan waktu ke-$t$ dipengaruhi oleh resid pada orde q waktu sebelumnya. Bentuk umum model MA dengan orde $q$ yang dinotasikan dengan MA(q) sebagai berikut:
+\begin{equation}\label{2.6.3}
+    X_t = \varepsilon_t - \theta_1 \varepsilon_{t-1} - \theta_2 \varepsilon_{t-2} - ... - \theta_q \varepsilon_{t-q}
+\end{equation}
+dimana :
+\begin{enumerate}
+    \item [$X_t$] :  data pada periode ke-$t$, $t = 1, 2, .., q$
+\item [$\theta_i$] : parameter MA ke-$i$, $i = 1, 2, ..., q $
+\item [$q$] : orde dari model MA
+\item [$\varepsilon_t$] : residu saat $t$, $\varepsilon_t  ~ WN(0,\sigma^2)$
+\end{enumerate}
+
+dengan menggunakan operator \emph{shift} mundur yaitu $BX_t  = X_{t-1}$, model MA bisa dituliskan sebagai berikut:
+\begin{equation}\label{2.6.4}
+\begin{aligned}
+    X_t  = \varepsilon_t  - \theta_1 B\varepsilon_t  - \theta_2 B^2\varepsilon_t - ... -\theta_q B^q  \varepsilon_t  \\
+= (1 - \theta_1 B - \theta_2 B^2 + ...+ \theta_q B^q) \varepsilon_t\\
+= \theta_q (B) \varepsilon_t
+\end{aligned}
+\end{equation}
+
+dengan $\theta_q (B) = (1 - \theta_1 B - \theta_2 B^2 - ... - \theta_q B^q)$. Model MA($q$) akan memenuhi kondisi stasioner jika total koefisien $\sum^q_{i=1}\theta_i < 1$. $i= 1,2,..,q$.
+
+\subsection{\emph{Auto-regressive Moving Average} (ARMA)}
+
+Ketika mengidentifikasi suatu model, adakalanya ditemukan bahwa data mengikuti proses AR sekaligus proses MA. Hal ini berarti, data mengikuti proses
+\emph{Auto-regressive Moving Average} (ARMA), yaitu model gabungan dari model AR orde $p$ dan model MA orde $q$. Model umum ARMA yang mempunyai orde ($p, q$) dapat dinyatakan sebagai berikut:
+\begin{equation}\label{2.6.5}
+X_t=\phi_1 X_{t-1}+\phi_2 X_{t-2}+...+\phi_p X_{t-p}+\varepsilon_t-\theta_1 \varepsilon_{t-1}-\theta_2 \varepsilon_{t-2} -...-\theta_q \varepsilon_{t-q}
+\end{equation}
+dimana:
+\begin{itemize}
+    \item [$X_t$] : data pada periode ke-$t$,$t=1,2,...,n$
+\item [$\theta_i$] : parameter MA ke-$i$,$i=1,2,...,q$
+\item  [$\theta_i$]: parameter AR ke-$i, i =1, 2, ..., p$
+\item [$\varepsilon_t$] : residu saat t, $\varepsilon_t  ~ WN(0,\sigma^2)$
+\end{itemize}
+
+dengan menggunakan operator shift mundur yaitu $BX_t  = X_{t-1}$, Persamaan (2.6.5) dapat ditulis yaitu:
+\begin{equation}\label{2.6.6}
+    (1 - \phi_1 B - \phi_2 B^2 + ...+ \phi_q B^q)X_t= (1 - \theta_1 B - \theta_2 B^2 + ...+ \theta_q B^q)\varepsilon_t
+\end{equation}
+atau dapat ditulis dalam bentuk seperti dibawah ini:
+    \begin{equation}\label{2.6.7}
+        \phi_p (B)X_t = \theta_q (B) \varepsilon_t
+    \end{equation}
+pada saat memilih orde p dan q pada model ARMA, dapat diidentifikasi dengan melihat plot ACF dan PACF yang disajikan pada tabel berikut:
+\newpage
+\begin{center}
+Tabel 2.6.3: Pola Autokorelasi (ACF) dan Autokorelasi Parsial (PACF)
+\end{center}
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|p{4 cm}|p{4 cm}|}
+\hline
+Model	&	ACF	&	ACF	\\\hline
+ARMA (p, 0)	&	Menurun secara bertahap menuju nol	&	Menuju nol setelah lag ke-p	\\\hline
+ARMA (0, q)	&	Menuju nol setelah lag ke-q	&	Menurun secara bertahap menuju nol	\\\hline
+ARMA (p, q)	&	Menurun secara bertahap menuju nol	&	Menurun secara bertahap menuju nol	\\\hline
+\end{tabular}
+\end{table}
+
+\subsection{\emph{Auto-regressive Integrated Moving Average} (ARIMA)}
+
+Model \emph{Auto-regressive Integrated Moving Average} (ARIMA) merupakan gabungan dari model AR dan MA setelah dilakukan \emph{differencing}. Dengan kata lain, model ARIMA merupakan model ARMA yang distasionerkan dengan melakukan \emph{differencing} pertama atau lebih (orde $d$). Bentuk umum model ARIMA ($p, d, q$) adalah sebagai berikut:
+\begin{equation}\label{2.6.8}
+(1 - B)^d X_t  =\phi_1 X_{t-1}  + \phi_2 X_{t-2}  +...+ \phi_p X_{t-p}  -\theta_1 \varepsilon_{t-1}  - \theta_2 \varepsilon_{t-2}-...- \theta_q \varepsilon_{t-q}  + \varepsilon_t
+\end{equation}
+
+atau dengan menggunakan operator shift mundur yaitu $BX_t  = X_{t-1}$  Persamaan (2.6.39) dapat ditulis sebagai berikut:
+\begin{equation}
+\phi_p (B) (1 - B)^d X_t  = \theta_q (B) \varepsilon_t
+\end{equation}
+dengan
+\begin{center}
+$\phi_p (B) = (1 - \phi_1 B - \phi_2 B^2  -...- \phi_p B^p  )$
+\end{center}
+\begin{center}
+$\theta_q (B) = (1 - \theta_1 B - \theta_2 B^2  -...- \theta_q B^q )$
+\end{center}
+\begin{itemize}
+\item [B] : operator shift mundur
+\item [$(1 - B)^d X_t$] : deret waktu yang stasioner pada \emph{differencing} ke-$d$.
+\item [$\theta_i$] : parameter MA ke $i$, $i = 1, 2, ..., q $
+\item [$\phi_i$] : parameter AR ke $i$, $i= 1, 2, ..., p $
+\item [$\varepsilon_t$] : residu saat $t$, $\varepsilon_t ~ WN(0,\sigma^2)$
+\end{itemize}
+
+\subsection{\emph{Autoregressive Condittional heteroskedasticity} (ARCH) dan \emph{General Auto Regressive Conditional Heteroskedeasticity} (GARCH)}
+
+Enders menyatakan bahwa banyak data runtun waktu di bidang ekonomi tidak memiliki mean yang konstan dan kebanyakan di antaranya memperlihatkan adanya periode-periode yang relatif tenang (\emph{tranquility}) kemudian diikuti oleh periode-periode yang penuh gejolak (\emph{volatility}) [5]. Kondisi demikian disebut heteroskedastik bersyarat, yaitu jika variansi tak bersyarat / variansi jangka panjang dari data adalah konstan, namun terdapat periode-periode tertentu dimana variansi relatif besar atau sebaliknya. Adanya heteroskedastisitas dalam data mengakibatkan variansi dari estimator menjadi lebih besar, yang selanjutnya akan berakibat pada semakin lebarnya interval konfidensi estimator.
+
+Salah satu model generasi baru yang memfokuskan pemodelan pada variansi adalah model Autoregressive Conditional Heteroscedasticity (ARCH) yang dikenalkan oleh Engle [6].
+
+Heteroskedatisitas dipandang bukan sebagai suatu masalah, tetapi justru memanfaatkan kondisi tersebut untuk membuat model. Bahkan dengan memanfaatkan heteroskedastisitas dalam residu yang tepat, maka akan diperoleh varians yang lebih efisien. Model ini dikenal dengan nama \emph{Autoregressive Condittional heteroskedasticity} (ARCH) dan \emph{General Auto Regressive Conditional Heteroskedeasticity} (GARCH). Misalkan terdapat persamaan sebagai berikut:
+\begin{equation}
+x_t=\phi_1 x_{t-1}+\phi_2 x_{t-2}+...+\phi_p x_{t-p}+\varepsilon_t
+\end{equation}
+
+Pada model deret waktu biasa $\varepsilon_t$ diasumsikan selalu homoskedastisitas yaitu $E[\varepsilon_t^2 ]=E[\varepsilon_t^2|\varepsilon_{t-1}^2,\varepsilon_{t-2}^2,…]=\sigma^2$ untuk setiap t. Sedangkan pada model ARCH/GARCH, varian $\varepsilon_t$ selalu berubah setiap waktu sehingga $E[\varepsilon_t^2 ]=E[\varepsilon_t^2\varepsilon_{t-1}^2,\varepsilon_{t-2}^2,...]=\sigma_t^2$. Varian $\varepsilon_t$ heteroskedastisitas dan mengikuti persamaan berikut:
+\begin{equation}
+\sigma^t_2 = \alpha_0 + \alpha_1 \varepsilon^2_{t-1}
+\end{equation}
+
+dengan $\alpha_0$ adalah komponen konstanta dan $\alpha_1 \varepsilon^2_{t-1}$ adalah komponen ARCH.
+
+Persamaan (2.6.5.1) merupakan model ARCH dimana $\sigma_t^2$ bergantung kepada volatilitas satu periode yang lalu atau disebut juga model ARCH (1). Apabila $\sigma_t^2$ bergantung kepada beberapa periode yang lalu, misalkan sebanyak p periode, maka persamaan ARCH(p) menjadi:
+\begin{equation}
+\sigma_t^2=\alpha_0+\alpha_1 \varepsilon_{t-1}^2+...+\alpha_p \varepsilon_{t-p}^2
+\end{equation}
+atau dapat ditulis:
+\begin{center}
+$\sigma_t^2=\alpha_0+\sum_{i=1}^p \alpha_i \varepsilon_{t-1}^2$
+\end{center}
+
+Namun pada model ARCH seringkali dijumpai jumlah p yang lebih besar sehingga parameter yang  akan diestimasi menjadi sangat banyak. Hal ini sering terjadi saat menganalisis data dengan periode waktu harian. Untuk mengatasi masalah tersebut model ARCH dikembangkan menjadi model GARCH dengan model umum GARCH(p,q) yaitu:
+\begin{equation}
+\sigma_t^2=\alpha_0+\sum_{i=1}^p \alpha_i \varepsilon_{t-1}^2+\sum_{i=j}^q beta_j \sigma_{t-1}^2
+\end{equation}
+dengan $\alpha>0; \alpha_i,\beta_j\geq 0$; dan $\sum_(i=1)^p \sum_(j=1)^q(\alpha_i+\beta_j)<1$.
+
+
+\subsubsection{Pendugaan parameter ARCH}
+
+Parameter model ARCH diduga dengan menggunakan metode penduga kemungkinan maksimum (\emph{Maximum Likelihood Estimation}). Asumsikan bahwa residual kuadrat menyebar menurut sebaran normal,  dan t merupakan banyaknya pengamatan. Maka fungsi likelihood untuk adalah:
+
+\begin{equation}
+L=\prod_{t=1}{T}\frac{1}{\sqrt{2\pi\sigma^2_t}}exp(-\frac{1\varepsilon_t^2}{2\sigma_t^2})
+\end{equation}
+Kemudian fungsi (2.6.5.1.1) dapat dituliskan menjadi\\
+$l=ln(L)=ln(\prod_{t=1}^T \frac{1}{\sqrt{2\pi\sigma^2_t}}exp(-\frac{1\varepsilon_t^2}{2\sigma_t^2}))
+$\\
+
+$=\sum_{t=1}^T ln(\frac{1}{\sqrt{2\pi\sigma^2_t}}exp(-\frac{1\varepsilon_t^2}{2\sigma_t^2}))
+$\\
+
+$=\sum_{t=1}^T ln(\frac{1}{\sqrt{2\pi\sigma^2_t}})+\sum_{t=1}^T ln(exp(-\frac{1\varepsilon_t^2}{2\sigma_t^2}))
+$\\
+
+$=-\frac{T}{2}  ln 2 \pi-\frac{1}{2} \sum_{t=1}^T ln\sigma_t^2-\sum_{t=1}^T \frac{\varepsilon_t^2}{2 \sigma_t^2}$
+
+dengan $\sigma_t^2=\alpha_0+\sum_{i=1}^p\alpha_i \varepsilon_{t-i}^2$. Parameter $\alpha=(\alpha_0,\alpha_1,...,\alpha_p)$ diestimasi dengan memaksimumkan fungsi likelihood (2.6.5.1.2) yaitu
+\begin{center}
+
+$\frac{\partial(-\frac{T}{2} ln 2 \pi - \frac{1}{2}  \sum_{t=1}^T ln \sigma_t^2 -\sum_{t=1}^T (\frac{\varepsilon_t^2}{2\sigma_t^2})}{\partial\alpha}=0
+$
+\end{center}
+
+
+Misalkan persamaan model ARCH (1) adalah $\sigma_t^2=\alpha_0+\alpha_1 \varepsilon_t^2$ maka fungsi likelihood untuk $\varepsilon_t^2$ adalah
+\begin{equation}
+l= -\frac{T}{2}  ln 2 \pi -\frac{1}{2}  \sum_{t=1}^T ln(\alpha_0+\alpha_1 \varepsilon_{t-1}^2)- \sum_{t=1}^T (\frac{\varepsilon_t^2}{2(\alpha_0+\alpha_1 \varepsilon_{t-1}^2)} )
+\end{equation}
+
+Selanjutnya persamaan (2.6.5.1.3) diturunkan terhadap masing-masing parameter yaitu:
+\begin{center}
+$\frac{\partial_t}{\partial \alpha_0} =-\frac{1}{2}  \sum_{t=1}^T (\alpha_0+\alpha_1 \varepsilon_{t-1}^2 )^{(-1)} +\frac{1}{2}\sum_{t=1}^T \frac{\varepsilon_t^2}{2(\alpha_0+\alpha_1 \varepsilon_{t-1}^2)} $
+\end{center}
+\begin{center}
+$\frac{\partial_t}{\partial \alpha_0} =-\frac{1}{2} \sum_{t=1}^T \varepsilon_{t-1}^2 \sum_{t=1}^T (\alpha_0+\alpha_1 \varepsilon_{t-1}^2 )^{(-1)} +\frac{1}{2}\sum_{t=1}^T (\frac{\varepsilon_{t-1}^2\varepsilon_t^2}{(\alpha_0+\alpha_1 \varepsilon_{t-1}^2)}) $
+\end{center}
+
+
+Kemudian estimasi parameter ini dilanjutkan dengan proses iterasi Newton Raphson.
+
+
+\section{Estimasi Parameter dari Model Regresi GARCH}
+
+Parameter model GARCH diduga dengan menggunakan metode penduga kemungkinan maksimum (Maximum Likelihood Estimation). Karena hasilnya sangat mirip dengan regresi model ARCH, maka estimasi parameternya akan sangat skematis.
+
+Berdasarkan persamaan (2.6.5.3), model umum GARCH(p,q) adalah
+\begin{center}
+$\sigma_t^2=\alpha_0+\sum_{i=1}^p \alpha_t \varepsilon_{t-i}^2 +\sum_{j=1}^q \beta_j \sigma_{t-j}^2$
+\end{center}
+dengan
+\begin{center}
+$y_t=x_t \beta_t+\varepsilon_t$
+\end{center}
+atau
+\begin{center}
+$\varepsilon_t=y_t-x_t \beta_t$
+\end{center}
+dimana
+\begin{itemize}
+\item [$y_t$]	: variabel dependen
+\item [$x_t$]	: vektor variabel penjelas
+\item 	[$b$]	: vektor parameter
+\end{itemize}
+
+Dari persamaan diatas, model GARCH terkait dengan residual kuadrat dengan variansi bersyarat. Variansi bersyarat data tersebut diambil pada saat t-1 (dinotasikan sebagai $\psi_{t-1}$), distribusi error diasumsikan sebagai
+\begin{center}
+$\varepsilon|\psi_{t-1} ~ N(0, h_t)$
+\end{center}
+dimana variansi bersyaratnya adalah
+\begin{center}
+$\sigma_t^2=\alpha_0+\sum_{i=1}^p \alpha_t \varepsilon_{t-i}^2 + \sum_{j=1}^q \beta_j \sigma_{t-j}^2$
+\end{center}
+dengan kita misalkan $\sigma_t^2=h_t$
+\begin{center}
+$h_t=\alpha_0+\alpha_1 \varepsilon_{t-1}^2+\alpha_2 \varepsilon_{t-2}^2+...+\alpha_q \varepsilon_{t-q}^2+\beta_1 h_{t-1}+\beta_2 h_{t-2}+...+\beta_p h_{t-p}$
+\end{center}
+
+Kita definisikan :
+
+$z _t=[1,\varepsilon_{t-1}^2,\varepsilon_{t-2}^2,...,\varepsilon_{t-q}^2,h_{t-1},h_{t-2},...,h_{t-p}]$\\
+
+$\sigma=[\alpha_0,\alpha_1  ,...,\alpha_q,\beta_1,\beta_2,..,\beta_q]$
+
+maka $h_t=z_t\sigma$
+
+Dalam pembahasan estimasi GARCH ini, dimisalkan kita memiliki model regresi GARCH(1,1) sedemikian hingga
+\begin{center}
+$y_t=\beta_0+\beta_1 x_t+\varepsilon_t,t=1,2,...,T$
+\end{center}
+dan
+\begin{center}
+$h_t=\alpha_0+\alpha_1 \varepsilon_{t-1}^2+\beta_1 h_{t-1}$
+\end{center}
+
+
+dengan $u_t$ adalah proses white noise dengan mean 0 dan variansi 1. Variabel $u_t$ dan $\varepsilon_{t-1}$ independen satu dengan yang lain. Maka kita akan memiliki vektor parameter $\theta$ sebagai berikut :
+\begin{center}
+$\theta = (\beta_0,\beta_1,\alpha_0,\gamma_1,\gamma_1 )$
+\end{center}
+
+
+dengan $\beta=(\beta_0,\beta_1)$ maka persamaan diatas dapat ditulis
+\begin{center}
+$\theta=(\beta,\sigma)$
+\end{center}
+dengan
+$\sigma = \begin{bmatrix}
+    \alpha_0&\gamma_1&\alpha_1
+\end{bmatrix}$  dan
+$\beta=\begin{bmatrix}
+    \beta_0\\
+\beta_1
+\end{bmatrix}$
+
+Bollerslev (1986) menggunakan algoritma Berndt,Hall,Hall and Hausman (BHHH) dalam mengestimasi model regresi GARCH. Dengan estimator BHHH, hanya perlu turunan pertama dari fungsi likelihood, sehingga tidak perlu lagi mencari turunan keduanya.
+
+Misalkan L menyatakan rata-rata dari fungsi likelihood dan $L_t$ menyatakan fungsi log likelihood untuk observasi ke- $t$, maka L dan $L_t$ dinyatakan sebagai berikut
+\begin{center}
+$L=T^{-1} \sum_{t=1}^T L_t $
+\end{center}
+\begin{center}
+$L_t=-\frac{1}{2}  log2\pi-\frac{1}{2}  log h_t-\frac{1}{2} \frac{\varepsilon_t^2}{h}$
+\end{center}
+
+
+Untuk mengestimasi parameter dari variansi $\sigma$ terlebih dahulu kita cari vektor gradien dari fungsi likelihood, dengan cara menurunkan fungsi likelihood terhadap parameter $\sigma$.
+\begin{center}
+$\frac{\partial L_t}{\partial \sigma}=
+\frac{1}{2h_2}\frac{\partial h_t}{\partial \sigma} (\frac{\varepsilon^2_t}{h_t} -1)
+$
+\end{center}
+dimana
+\begin{center}
+$\frac{\partial h_t}{\partial \sigma}=z_t+\sum_{i=1}^p \beta_i \frac{\partial h_{t-1}}{\partial \sigma}$
+\end{center}
+
+
+Kemudian estimasi parameter ini dilanjutkan dengan metode Newton - Raphson [3].
+
+Untuk mengestimasi parameter dari mean yaitu  $\beta$ , terlebih dahulu kita cari vektor gradien dari fungsi likelihood, dengan cara menurunkan fungsi likelihood terhadap parameter $\beta$. Hasilnya seperti yang kita peroleh pada persamaan berikut yaitu \begin{center}
+$\frac{\partial h_t}{\partial \beta}=\frac{\varepsilon x_t}{h_t}+\frac{1}{2}(\frac{1}{h_t})\frac{\partial h_t}{\partial \beta}(\frac{\epsilon^2_t}{h_t}-1)$
+\end{center}
+dimana
+\begin{center}
+$\frac{\partial h_t}{\partial \beta}=-2\sum_{j=1}^q \alpha_j x_{t-j} \varepsilon_{t-j}+\sum_{j=1}^p j \frac{\partial_{t-1}}{\partial \beta} $
+\end{center}
+
+Kemudian estimasi parameter ini dilanjutkan dengan metode Newton - Raphson [3]
+
+\subsection{Uji Q-Ljung Box}
+
+Uji Q-Ljung Box merupakan uji yang digunakan untuk melihat ada atau tidaknya autokorelasi pada data. Hipotesis yang akan diuji adalah
+\begin{itemize}
+\item [$H_0$]:  $\rho_k = 0$ (tidak ada autokorelasi antar residu)
+\item [$H_1$] :$\rho_k \neq 0$ (ada autokorelasi antar residu)
+\end{itemize}
+Statistik uji yang digunakan yaitu
+
+
+$Q_{LB}=(n)(n+2)\sum_{k=1}^K \frac{r_k^2}{n-k}$
+\begin{itemize}
+\item [$Q_{LB}$] = nilai Q Ljung-Box
+\item  [n]    = banyak data pengamatan
+
+\item [$r_k^2$] = koefisien autokorelasi sisaan pada lag k dengan $k=1,2,...K$
+\item [K]   = lag maksimum
+\end{itemize}
+
+Jika nilai $Q_{LB} > \lambda_{(k-p-q)^2 } (\alpha)$ maka hipotesis nol ditolak atau jika p-value lebih kecil dari $\lambda$ maka disimpulkan untuk menolak $H_0$. Hal ini berarti masih terdapat autokorelasi pada residual model.
+
+
+
+\subsubsection{Uji Lagrange Multiplier}
+
+Uji Lagrange Multiplier (LM) adalah uji untuk mendeteksi apakah masih terdapat atau tidak efek heteroskedastisitas/ARCH pada residual kuadrat. Uji ini dilakukan dengan meregresikan residual kuadrat kemudian menduga nilai koefisiennya. Misalkan model regresi residual kuadrat sebagai berikut:
+
+$\varepsilon_t^2=\alpha_0+\alpha_1 \varepsilon_{t-1}^2+...+\alpha_k \varepsilon_{t-k}^2$
+
+hipotesis dari uji ini adalah
+\begin{itemize}
+\item [$H_0$] : $\alpha_0=\alpha_1=...=\alpha_k=0$ (tidak ada efek ARCH)
+\item [$H_1$] : $\alpha_i?0$,$i=0,1,2,…,k$(terdapat efek ARCH)
+\end{itemize}
+
+
+Statistik ujinya adalah:
+\begin{center}
+$LM = nR^2$
+\end{center}
+dengan
+\begin{enumerate}
+\item [n]  = banyak data pengamatan
+\item [$R^2$] = koefisien determinasi model regresi residu kuadrat
+\end{enumerate}
+
+Statistik uji LM menyebar mengikuti distribusi $\chi^2$ dengan $q$ adalah orde dari model ARCH. Hipotesis nol ditolak jika $LM > \chi_q^2 (\alpha)$.
+
+\subsubsection{Uji Jarque Bera}
+
+Uji Jarque Bera digunakan untuk menguji kenormalan residual model. Ukuran yang digunakan pada uji ini adalah skewness (kemenjuluran) dan kurtosis (keruncingan). Hipotesis yang akan diuji adalah:
+\begin{itemize}
+    \item [$H_0$] : sisaan menyebar normal
+\item [$H_1$] : sisaan tidak meenyebar normal
+\end{itemize}
+
+Statistik uji pada Jarque Bera adalah:
+\begin{equation}
+    JB = \frac{n}{6}(S^2+\frac{(K-3)^2)}{4})
+\end{equation}
+
+dengan
+\begin{itemize}
+\item [n] = banyak data pengamatan
+\item [S] = \emph{skewness} (kemenjuluran)
+\item [K] = \emph{kurtosis} (keruncingan)
+\end{itemize}
+
+Statistik uji Jarque Berra menyebar mengikuti sebaran $\chi^2$ dengan derajat bebas 2. Hipotesis nol ditolak jika $JB >\chi_(2)^2(\alpha)$.
+
+\subsubsection{\emph{Akaike Information Criterion} (AIC) dan \emph{Bayesian Information Criterion} (BIC)}
+
+Jika terdapat dua atau lebih pada satu model time series, maka dilakukan pemilihan model terbaik. Kriteria pemilihan model yang paling umum digunakan pada model time series adalah \emph{Akaike Information Criterion} (AIC) dan \emph{Bayesian Information Criterion} (BIC). AIC dan BIC digunakan untuk melihat kecocokan model terhadap data. AIC pertama kali dikemukakan oleh Hirotugu Akaike pada tahun 1974,sedangkan BIC atau disebut juga Schwarz Information Criterion dipublikasikan pada tahun 1978. Dengan AIC dan BIC dipilih model dengan jumlah lag yang paling cocok dengan model.
+
+Berikut perumusan AIC dan BIC :
+\begin{center}
+$
+AIC=n ln(RSS)+2k$
+\end{center}
+\begin{equation}
+BIC=n ln(RSS)+k ln(n)
+\end{equation}
+
+dengan
+\begin{itemize}
+    \item [n] 	= banyak data pengamatan
+\item [RSS]	= jumlah kuadrat residual
+\item [K]	= Jumlah parameter yang diestimasi
+\end{itemize}
+	
+	 AIC digunakan untuk menentukan model yang dapat menjelaskan data dengan jumlah parameter yang baik untuk menduga data. Sedangkan BIC digunakan untuk memperbaiki sifat pendugaan yang terlalu tinggi dari AIC. Semakin kecil nilai AIC dan BIC sebuah model maka semakin ideal hasil pemodelannya. Berlaku juga sebaliknya.
+
+
+\section{Fuzzy Time Series}
+\subsection{Himpunan Fuzzy}
+
+Himpunan tegas (crisp) merupakan himpunan yang nilai derajat keanggotaan dari elemen hanya mempunyai dua kemungkinan yaitu 0 dan 1. Nilai 0 menunjukkan bahwa suatu elemen tidak terdapat di dalam himpunan, sedangkan nilai 1 menunjukkan elemen tersebut terdapat dalam himpunan. Jika pada himpunan tegas nilai derajat keanggotaan hanya 0 dan 1, maka terdapat sebuah himpunan yang dikenal dengan himpunan fuzzy yang dapat digunakan untuk mengatasi kelemahan dari himpunan tegas. Nilai derajat keanggotaan himpunan fuzzy berada pada interval [0,1]. Dapat diartikan bahwa nilai kebenaran suatu elemen tidak hanya benar atau salah. Nilai 0 menunjukkan salah, nilai 1 menunjukkan benar, dan masih ada nilai-nilai yang terletak antara benar dan salah tersebut, sebagai contoh 0,1; 0:4; 0,75; ::: dst
+Beberapa hal yang berkaitan dengan fuzzy yaitu:
+\begin{enumerate}
+\item Variabel Fuzzy\\
+Variabel fuzzy adalah variabel yang akan dibahas dalam suatu sistem fuzzy.
+\item Himpunan Fuzzy\\
+Himpunan fuzzy adalah himpunan dengan nilai derajat keanggotaan untuk setiap elemennya berada pada interval [0,1]. Ada 2 jenis himpunan fuzzy yaitu:
+\begin{enumerate}
+\item [a] Linguistik, yaitu penamaan kelompok berdasarkan suatu keadaan, atau kondisi tertentu dengan menggunakan bahasa alami, seperti: sangat kurus, kurus, ideal, gemuk dan sangat gemuk
+\item [b] Numerik, yaitu suatu nilai yang menunjukkan ukuran dari suatu variabel berupa sebuah bilangan seperti: 4, 27, 50, 98 dll.
+\end{enumerate}
+\item Himpunan Semesta\\
+Himpunan semesta adalah keseluruhan nilai yang dapat dioperasikan dalam suatu variabel fuzzy. Nilai dari himpunan semesta dapat berupa bilangan positif maupun negatif.
+\item Domain Himpunan Fuzzy\\
+Domain himpunan fuzzy merupakan keseluruhan himpunan nilai yang memenuhi persyaratan dalam himpunan semesta, serta akan dioperasikan dalam suatu himpunan fuzzy. Nilai domain berupa bilangan positif maupun negatif.
+\item Fungsi Keanggotaan\\
+Fungsi keanggotaan merupakan suatu kurva yang menggambarkan pemetaan titik-titik data ke dalam nilai derajat keanggotaannya, yang biasanya terdapat pada interval antara 0 sampai 1.
+\end{enumerate}
+
+\subsection{Rantai Markov (\emph{Markov Chain})}
+
+Rantai markov pertama kali diperkenalkan pada tahun 1906. Awal nya, penerapan rantai Markov digunakan untuk menganalisis dan memperkirakan perilaku partikel-partikel gas dalam suatu wadah tertutup. Setelah itu, rantai Markov digunakan untuk meramalkan keadaan cuaca. Sifat dari rantai Markov, apabila suatu proses berada dalam suatu keadaan tertentu, maka peluang berkembangnya proses dimasa yang akan datang, hanya bergantung pada keadaan saat ini, dan tidak bergantung pada keadaan sebelumnya. Atau dapat dikatakan bahwa rantai Markov adalah kejadian dimana peluang bersyarat kejadian yang akan datang tergantung pada kejadian sekarang. Analisis rantai markov merupakan suatu bentuk khusus dari model probabilistik yang lebih umum dikenal dengan proses stokastik.
+
+Proses stokastik merupakan suatu barisan kejadian yang memenuhi hukum-hukum peluang. Jika dari pengamatan yang lalu, keadaan yang akan datang suatu barisan dapat diramalkan secara pasti, maka barisan kejadian itu dinamakan deterministik. Jika pengalaman yang lalu hanya dapat menyajikan struktur peluang keadaan yang akan datang, maka barisan kejadian yang demikian disebut stokastik. Berikut ini diberikan definisi proses stokastik dan proses stokastik bersifat Markov.
+
+\textbf{Definisi 2.7.2.1} Proses stokastik $X_n(t)$ merupakan serangkaian peubah acak yang berubah terhadap waktu pengamatan $t \varepsilon T$.
+
+\textbf{Definisi 2.7.2.2} Suatu proses stokastik Xn(t) dikatakan memiliki sifat Markov jika $P(X_{n+1}=j|X_n=i,X_{n-1}=i_{n-1},...,X_0=i_0)=P(X_{n+1}=j|X_n=i)$ untuk waktu $n=0,1,..$ dan untuk setiap $j,i,i_{n-1},…,i_1,i_0$.
+
+Rantai Markov (\emph{Markov Chain}) adalah proses stokastik yang bersifat Markov. $P(X_{n+1}=j)$ adalah notasi peluang dari $X_{n+1}=j$, notasi ini berarti bahwa proses berada pada keadaaan ke-$j$ dan pada waktu ke $n+1$. Sifat rantai Markov ini menyatakan bahwa, peluang bersyarat dari kejadian mendatang $X_{n+1}=j$, hanya bergantung pada keadaan saat ini $X_n=i$.
+
+\textbf{Definisi 2.7.2.3} Peluang bersyarat $P(X_{n+1}=j|X_n=i)$ dikatakan peluang transisi satu Langkah jika untuk setiap $i$ dan $j$
+\begin{center}
+$P(i,j)=P(X_{n+1}=j|X_n=i)$
+\end{center}
+tidak bergantung pada waktu n.
+
+Peluang transisi satu langkah yang tidak bergantung pada waktu $n$ dikatakan stasioner. Oleh karena itu, peluang transisi stasioner menyiratkan bahwa peluang transisi tidak berubah seiring waktu, yang dinotasikan dengan $P(i,j)$. Persamaan pada definisi 2.7.2.3 menyatakan peluang dari keadaan j pada waktu $n + 1$, $X_{n+1}=j$ yang dinotasikan $P(X_{n+1}=j)$, jika diberikan pada peluang proses keadaan $i$ pada waktu $n$, yang dinotasikan $P(X_n=i)$. Peluang transisi satu langkah yang bergantung pada waktu sekarang, dan waktu-waktu sebelumnya dinyatakan sebagai berikut:
+\begin{center}
+$P(X_{n+1}=j|X_n=i,X_{n-1}=i_{n-1},...,X_0=i_0 )=P(i,j)$
+\end{center}
+
+Peluang transisi satu langkah dapat dibuat ke dalam format matriks transisi. Matriks transisi dari rantai markov $X_n$, dengan $n = 0,1,2,…,N$ dengan ruang keadaan ($0,1,2,…,N$). Berikut format matriks transisi dari peluang transisi :
+
+$\textbf{P}=[p(i,j)]=
+\begin{bmatrix}
+p(0,0)&p(0,1)&\cdots&p(0,N)\\
+p(1,0)&p(1,1)&\cdots&p(1,N)\\
+\vdots&\vdots&\ddots&\cdots\\
+p(N,0)&p(N,1)&\cdots&p(N,N)
+\end{bmatrix}
+$\\
+dengan sifat peluang transisi $p(i,j)$ sebagai berikut:
+\begin{itemize}
+\item $p(i,j)\geq 0, \forall i,j$
+\item $\sum_j p(i,j) =1,  \forall i,j$
+\end{itemize}
+
+
+\subsection{Proses awal Pemodelan FTS}
+
+Proses pemodelan FTS terbagi dalam beberapa langkah, Langkah awal terdiri atas langkah pembagian interval dan Langkah pembentukan \emph{Fuzzy Logical Relationship} (FLR). Pembagian interval pada penelitian ini adalah dengan metode \emph{average based}, hal ini dikarenakan proses pembagian intervalnya yang sangat rinci sehingga akan dapat menghasilkan model yang baik berdasarkan nilai keakuratan modelnya.
+
+Langkah tengah dan akhir diproses berdasarkan Algoritma FTS masing-masing. Berikut Langkah awal pemodelan FTS:
+
+\textbf{Langkah Pertama} Menentukan himpunan universal (U) data konkret melalui proses :
+\begin{equation}
+U=[D_{min}-D_1; D_max+D_2]
+\end{equation}
+$D_1,D_2$:sembarangan bilangan positif.
+
+\textbf{Langkah kedua} Menghitung banyaknya interval himpunan fuzzy dengan average based melalui proses:
+\begin{enumerate}
+\item Menentukan panjang interval U
+\begin{equation}
+R=[D_{max}+D_2- D_{min}-D_1]
+\end{equation}
+
+\item Hitung nilai selisih \emph{(lag) absolute} dan rata-rata nilai selisih \emph{(lag) absolute}
+    \begin{equation}
+\text{lag absolute} =|(D_{t+1} )-D_t |	
+\end{equation}
+\begin{equation}
+\text{mean lag absolute}=\frac{\sum_{t=1}^{N-1}|(D_{t+1} )-D_t |}
+{N-1}
+\end{equation}
+dengan $D_t$ : data pada kondisi ke t dan N mewakili banyaknya data.
+\item	Menentukan basis interval
+\begin{equation}
+K=\frac{mean}{2}
+\end{equation}
+\newpage
+
+Penentuan basis interval berdasarkan tabel berikut:
+\begin{center}
+Tabel 2.8.3 : Basis Interval
+\end{center}
+\begin{table}[htbp]
+  \centering
+
+\begin{tabular}{|c|c|}
+  \hline
+Jangkauan	&Basis\\\hline
+0.1 - 1&	0.1\\\hline
+1.1 - 10	&1\\\hline
+11 - 100	&10\\\hline
+101 - 1000	&100\\\hline
+1001 - 10000&	1000\\
+  \hline
+\end{tabular}
+\end{table}
+\item	Menentukan banyaknya himpunan fuzzy melalui proses
+\begin{equation}
+n=\frac{R}{K}	
+\end{equation}
+\item Mencari median himpunan fuzzy\\
+$m_i=\frac{\text{Batas bawah $u_i$}+\text{Batas atas $u_i$}}{2}$
+
+
+\end{enumerate}
+Langkah ketiga Merumuskan tingkat kedudukan himpunan fuzzy terhadap $A_i$ dan fuzzyfikasi.
+fuzzyfikasi pada data konkret yaitu proses mengonversikan karakter data input yang awalnya berupa numerik menjadi linguistik memanfaatkan tingkat kedudukan yang disimpan dalam basis pengetahuan fuzzy. Banyaknya variabel linguistik yang didapat boleh bebas, karena tidak adanya aturan baku. Perumusan himpunan fuzzy pada $A_i$ adalah dengan tingkat kedudukan. Tingkat kedudukan dari himpunan fuzzy ui  dapat disederhanakan sebagai berikut:
+
+\begin{equation}
+\mu_{Ai}(u_i)=
+\begin{cases}
+    1, \text{jika} i=i\\
+    0.5, \text{jika} i = i-1 \text{atau} i=i+1 \\
+    0, \text{yang lainnya}\\
+    \end{cases}
+\end{equation}
+
+dengan $1\leq i\geq n,  n$ : banyaknya himpunan fuzzy,
+\begin{center}
+Tabel 2.8.4: Tingkat Kedudukan Himpunan Fuzzy
+\end{center}
+\begin{table}[htbp]
+  \centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+  \hline
+$\mu_{A_i}(u_i)$	&	$A_1$	&	$A_2$	&	$A_3$	&	...	&	 $A_{n-2}$	&	$A_{n-1}$	&	$A_n$	\\\hline
+$A_1$	&	1	&	0,5	&	0	&	...	&	0	&	0	&	0	 \\\hline
+$A_2$	&	0,5	&	1	&	0,5	&	...	&	0	&	0	&	0	 \\\hline
+$A_3$	&	0	&	0,5	&	1	&	...	&	0	&	0	&	0	 \\\hline
+...	&	...	&	...	&	...	&	...	&	...	&	...	&	...	\\\hline
+$A_{n-2}$	&	0	&	0	&	0	&	...	&	1	&	0,5	&	0	 \\\hline
+$A_{n-1}$	&	0	&	0	&	0	&	...	&	0,5	&	1	&	0,5	 \\\hline
+$A_n$	&	0	&	0	&	0	&	...	&	0	&	0,5	&	1	\\
+  \hline
+\end{tabular}
+\end{table}
+
+
+\textbf{Langkah keempat} Menyusun \emph{Fuzzy Logical Relationship} (FLR)\\
+FLR bersandarkan pada data konkret. Langkah ini menetapkan relasi logika fuzzy yaitu $A_i \rightarrow A_j$. Himpunan $A_i$ merupakan kondisi sekarang $D_{(t-1)}$ dan $A_j$ adalah kondisi berikutnya pada waktu ke $D_t$. FLR menghubungkan relasi antara nilai linguistik yang ditentukan berdasarkan tabel fuzzyfikasi yang didapat sebelumnya.
+Langkah kelima dan seterusnya dibahas berdasarkan algoritma FTS masing-masing.
+
+\subsection{FTS Chen}
+
+FTS Chen diperkenalkan oleh Shyi Ming Chen pada 1996. Langkah FTS Chen lebih sederhana dibandingkan FTS lain pada penelitian ini. Berikut Langkah selanjutnya FTS Chen:
+
+\textbf{Langkah kelima} Menyusun \emph{Fuzzy Logical Relationship Group} (FLRG)
+
+FLRG dikerjakan melalui proses kategorisasi \emph{fuzzy} yang mempunyai kondisi sekarang yang serupa kemudian dikumpulkan menjadi satu kumpulan pada kondisi berikutnya. Setiap FLR dikumpulkan membentuk FLRG yang saling berkaitan.
+
+Misal, ada 4 \emph{Fuzzy Logical Relationship} (FLR) sama, $A_1\rightarrow A_2,A_1\rightarrow A_2,A_1\rightarrow A_2$,dan $A_1\rightarrow A_3$, membentuk FLRG $A_1\rightarrow A_2,A_3$ karena menurut Chen $A_1\rightarrow A_2,A_1\rightarrow A_2,A_1\rightarrow A_2$, tidak mempengaruhi hasil model maka cukup dirasa satu FLRG.
+
+\textbf{Langkah keenam} Pembentukan matriks peluang
+\begin{center}
+$P_{ij}=\frac{M_{ij}}{M_i} ,i,j=1,2,3,...,n$
+\end{center}
+dengan
+\begin{itemize}
+\item [$P_{ij}$] : peluang perubahan dari kondisi $A_i$ ke $A_j$ dengan satu tahap.
+\item [$M_{ij}$]: waktu perubahan dari kondisi $A_i$ ke $A_j$ dengan satu tahap.
+\item [$M_i$]  : jumlah data dari kondisi $A_i$ dengan mengikuti proses 5 diatas.
+\end{itemize}
+
+Mengikuti kaidah peluang perubahan pada kondisi tersebut, diperoleh matriks peluang perubahan $R$ dengan dimensi $n x n$, disajikan dengan rumus:
+\begin{center}
+$
+R=(\begin{bmatrix}
+P_{11}&\cdots&P_{1n}\\
+\vdots&\ddots&\vdots\\
+P_{n1}&\cdots&P_{nn}
+\end{bmatrix})
+$
+\end{center}
+
+
+
+\textbf{Langkah ketujuh} \emph{Defuzzyfikasi}
+
+\emph{Defuzzyfikasi} adalah mengonversi data keluaran \emph{fuzzy} yang didapat dari susunan logika\emph{fuzzy} menjadi data keluaran bersifat nilai tegas (numeris) sebagai nilai model menggunakan nilai kedudukan yang sesuai pada saat dilakukan \emph{fuzzyfikasi}.
+Berikut \emph{Defuzzyfikasi} FTS Chen :
+
+\begin{itemize}
+\item Jika FLRG dari $A_i$ berubah ke himpunan kosong $A_i\rightarrow \theta$, maka model $F_t$ bernilai $m_i$, yaitu median dari $u_i$ dengan rumus :
+\begin{center}
+  $  F_t=m_i$
+\end{center}
+\item Jika FLRG dari $A_i$ berubah satu ke satu ($A_i\rightarrow A_k$ dengan $P_{ij}=0$ dan $P_ik=1$,$j\neq k$) maka model $F_t$ bernilai $m_k$ yaitu median dari $u_i$ dengan rumus :
+\begin{center}
+    $F_t=m_k$
+\end{center}
+\item Jika FLRG dari $A_i$ berubah satu ke banyak ($A_i\rightarrow A_1,A_2,...,A_p,i=1,2,...,p$), maka model $F_t$ bernilai :
+\begin{center}
+$F_t=\frac{m_{1(t-1)}+m_{2(t-1)}+...+ m_{p(t-1)}}{p}$
+\end{center}
+
+\end{itemize}
+
+\subsection{FTS Lee}
+
+Pada 1993, Song dan Chissom mengembangkan FTS Chen menjadi FTS Song $\&$ Chissom. Kemudian FTS Lee ini merupakan perkembangan dari model FTS Song $\&$ Chissom, Cheng dan Chen. Berikut Langkah lanjutan dari FTS Lee :
+
+\textbf{Langkah kelima} Menyusun \emph{Fuzzy Logical Relationship Group} (FLRG)\\
+Misal, ada 3 \emph{Fuzzy Logical Relationship} (FLR) $A_1\rightarrow A_2,A_1\rightarrow A_2$,dan $A_1\rightarrow A_3$, membentuk FLRG  $A_1\rightarrow A_2,A_2,A_3$. Karena kaidah Lee memaparkan  $A_1\rightarrow A_2,A_1\rightarrow A_2$ dihitung lebih dari satu karena dapat mempengaruhi hasil model.
+
+\textbf{Langkah keenam} Pembentukan matriks peluang\\
+Langkah ini sama dengan Langkah keenam FTS Chen diatas
+
+\textbf{Langkah ketujuh} \emph{Defuzzyfikasi}
+\begin{itemize}
+\item Jika FLRG dari $A_i$ berubah ke himpunan kosong $A_i\rightarrow?$, maka model  $F_t$ bernilai $m_i$, yaitu median dari $u_i$ dengan rumus :
+\begin{center}
+$F_t=m_i$
+\end{center}
+\item Jika FLRG dari $A_i$ berubah satu ke satu ($A_i\rightarrow A_k$ dengan $P_{ij}=0$ dan $P_{ik}=1$,$j\neq k$) maka model $F_t$ bernilai $m_k$ yaitu median dari $u_i$ dengan rumus :
+\begin{center}
+$F_t=m_k P_{ik}=m_k$
+\end{center}
+\item Jika FLRG dari $A_i$ berubah satu ke banyak ($A_i\rightarrow A_1,A_2,...,A_n$,$i=1,2,...,n$) , maka model $F_t$ bernilai :
+\begin{center}
+$F_t=m_1 P_{i1}+m_2 P_{i2}+...+ m_{(i-1)} P_{i(i-1)} + m_i P_{ii}+...+ m_n P_{in} $
+\end{center}
+dengan
+$m_1,m_2,...,m_{i-1},m_{i+1},...,m_n$ : median dari $u_1,u_2,...,u_{i-1},u_{i+1},...,u_n$.
+\end{itemize}
+
+\subsection{FTS Tsaur}
+
+Tsaur mengembangkan model Fuzzy Time Series menjadi Fuzzy Time Series Markov Chain (FTSMC). Model ini mengombinasikan model fuzzy time series dengan rantai Markov. Berikut ini diuraikan langkah lanjutan untuk menyelesaikan model Fuzzy Time Series Tsaur:
+
+\textbf{Langkah kelima} Menyusun \emph{Fuzzy Logical Relationship Group} (FLRG)\\
+Misal, ada 3 \emph{Fuzzy Logical Relationship} (FLR) $A_1\rightarrow A_2, A_1\rightarrow A_2,dan A_1\rightarrow A_3$, membentuk FLRG  $A_1 \rightarrow A_2,A_2,A_3$. Karena Tsaur memaparkan $A_1\rightarrow A_2,A_1\rightarrow A_2$ dihitung lebih dari satu karena dapat mempengaruhi hasil model.
+
+\textbf{Langkah keenam} Pembentukan matriks peluang\\
+Langkah ini sama dengan Langkah keenam FTS Chen di atas
+
+\textbf{Langkah ketujuh} Defuzzyfikasi
+\begin{itemize}
+\item Jika FLRG dari $A_i$ berubah ke himpunan kosong $A_i \rightarrow \theta$, maka model $F_t$ bernilai $m_i$, yaitu median dari $u_i$ dengan rumus:
+\begin{center}
+    $F_t=m_i$
+\end{center}
+\item Jika FLRG dari $A_i$ berubah satu ke satu ($A_i \rightarrow A_k$ dengan $P_{ij}=0$ dan $P_{ik}=1$,$j\neq k$) maka model $F_t$ bernilai $m_k$ yaitu median dari $u_i$ dengan rumus :
+\begin{center}
+  $  F_t=m_k P_{ik}=m_k$
+\end{center}
+\item Jika FLRG dari $A_i$ berubah satu ke banyak ($A_i\rightarrow A_1,A_2,...,A_n,i=1,2,...,n$) dan kelompok data $X_{t-1}$ ketika  $t-1$ ada pada kondisi $A_i$, maka model $F_t$ bernilai :
+\begin{center}
+$F_t=m_1 P_{i1}+...+ m_{(i-1)} P_{i(i-1)}+ X_{t-1} P_{ii}+m_{(i+1)} P_{i(i+1)}+ ...+ m_n P_{in} $
+\end{center}
+\end{itemize}
+Nilai $m_j$ disubstitusikan oleh $X_{t-1}$ agar didapatkan data dari kondisi $A_j$ ketika $t-1$.
+
+\textbf{Langkah kedelapan} Perhitungan sinkronisasi model,\\
+Perhitungan sinkronisasi model bertujuan memperbaiki error pemodelan yang disebabkan biasnya matriks peluang perubahan. Aturan sinkronisasi model ($D_t$) :
+\begin{itemize}
+    \item Jika kondisi $A_i$ ketika  $t-1$ sebagai $F_{t-1}=A_i$ ada pergerakan maju ke kondisi $A_{i+s}$ ketika $t$, dimana $1\leq s \leq n-1$ maka sinkronisasi $D_t$ :
+ \begin{equation}
+     D_t=(\frac{l}{2})s,(1\leq s\leq n-1)
+ \end{equation}
+dengan $s$ : banyak lompatan perubahan maju.
+\item Jika kondisi $A_i$ ketika  $t-1$ sebagai $F_{t-1}=A_i$ ada pergerakan mundur ke kondisi $A_{i-v}$ pada saat t, dengan $1 \leq v \leq i$ maka sinkronisasi $D_t$ :
+\begin{equation}
+D_t=-(\frac{l}{2})v,(1\leq v \leq i)
+\end{equation}
+dengan $v$ : banyak lompatan perubahan mundur.
+\end{itemize}
+
+\textbf{Langkah kesembilan} Hasil akhir model\\
+Perhitungan hasil akhir model FTS Tsaur diperoleh melalui proses menambah hasil awal model dan sinkronisasi model. Bentuk umum hasil akhir model ($FM_t$) yaitu:
+\begin{equation}
+    FM_t = F_t + D_t
+\end{equation}
+$FM_t$ : hasil akhir model pada saat ke-$t$
+
+\section{Keakuratan Model}
+
+Untuk mengetahui tingkat keakuratan model maka dihitung nilai errornya. Model terbaik ialah model dengan error paling kecil. Diantara Metode perhitungan error adalah:
+\begin{enumerate}
+\item \emph{Root Mean Squared Error} (RMSE)\\
+RMSE adalah metode alternatif untuk mengukur tingkat akurasi hasil pemodelan suatu model.
+\begin{equation}\label{2.8.1}
+    RMSE=\sqrt{\frac{1}{n}\sum^n_{t=1}(X_t-F_t)^2}
+\end{equation}
+$X_t$ : data observasi pada waktu ke-$t$
+\item \emph{Mean Absolute Error} (MAE)\\
+Untuk mengukur akurasi pemodelan dengan meratakan nilai absolut error pemodelan.
+\begin{equation}\label{2.8.2}
+    MAE=\frac{1}{n}\sum^n_{t=1}|X_t-F_t|
+\end{equation}
+\item \emph{Mean Absolute Percentage Error} (MAPE). \\
+MAPE adalah rata-rata dari semua persentase kesalahan antara data asli dan hasil pemodelan.
+\begin{equation}\label{2.8.3}
+    MAPE=\frac{1}{n}\sum^n_{t=1}|\frac{X_t-F_t}{X_t}|*100\%
+\end{equation}
+Berikut kategori penilaian MAPE :
+\begin{enumerate}
+    \item Jika rate MAPE $< 10\%$ maka kriteria modelnya sangat bagus.	
+	\item Jika rate MAPE 10$\%$ s/d 20$\%$ maka kriteria modelnya bagus
+	\item Jika rate MAPE 20$\%$ s/d 50$\%$ maka kriteria modelnya cukup bagus
+	\item Jika rate MAPE $>$ 50$\%$ maka kriteria modelnya tidak bagus
+\end{enumerate}
+\end{enumerate}
+
+
+\chapter{METODE PENELITIAN}
+
+\section{Jenis dan Sumber Data}
+
+\section{Teknik Pengolahan dan Analisis Data}
+
+%%=============================================================================
+
+\newpage
+\addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
+
+\begin{thebibliography}{56}
+\bibitem{aldous2000} Aldous, J. M. dan Robin J. W. 2000. \emph{Graphs and Applications an Introductory Approach}, Springer. \label{dp1}	
+	
+	\bibitem{baskoro2011} Baskoro, E. T. dan Yulianti, L. 2011. On Ramsey minimal graphs for $2K_2$ versus $P_n$, \textit{Adv. Appl. Discrete Math} \textbf{8}(2):83-90.
+	
+	\bibitem{baskoro2015} Baskoro, E. T. dan Wijaya, K. 2015. On Ramsey $(2K_2,C_4)-Minimal \ Graphs$, Mathematics in the 21st Century: 6th World Conference, Lahore \textit{Spinger Proceedings in Mathematics \& Statistics} \textbf{98}:11-17.	
+\end{thebibliography}	
+
+
+%==================================================================
+%\chapter*{DAFTAR LAMPIRAN}
+%\addcontentsline{toc}{chapter}{DAFTAR LAMPIRAN}
+
+%$\begin{array}{llll}
+%\textrm{Lampiran~ 1} & \textrm{Metode Titik-Interior}~(Interior-Point~ Method)& ~~ &$10$ \\
+%\textrm{Lampiran~ 2} & \textrm{Kriteria~Kualitas~ Terbang~Lateral-Direksional}& ~~ &$15$
+%\end{array}$
+
+%=======================================
+%\chapter*{RIWAYAT HIDUP}
+%\addcontentsline{toc}{chapter}{RIWAYAT HIDUP}
+
+%\noindent Berikut adalah \textbf{contoh} penulisan Riwayat Hidup.
+
+%Penulis bernama $\cdots$, dilahirkan di kota $\cdots$ pada tanggal $\cdots$. Putri dari pasangan $\cdots$ dan $\cdots$ ini memulai pendidikannya di $\cdots$ pada tahun $\cdots$. Setelah itu, penulis melanjutkan pendidikannya di $\cdots$ pada tahun $\cdots$, $\cdots$ pada tahun $\cdots$, $\cdots$ pada tahun $\cdots$, dan $\cdots$. Pada tahun $\cdots$, penulis diterima sebagai mahasiswa Program Studi S2 di Departemen Matematika dan Sains Data, Fakultas Matematika dan Ilmu Pengetahuan Alam, Universitas Andalas.
+
+\end{document}
+%=============================================================
